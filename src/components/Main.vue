@@ -1,4 +1,6 @@
 <template>
+<div>
+    <Banner/>
     <el-container>
         <el-main>
             <Content/>
@@ -7,10 +9,13 @@
             <Rside/>
         </el-aside>
     </el-container>
+    <el-footer></el-footer>
+</div>
 </template>
 
 
 <script>
+import Banner from "./Banner.vue";
 import Content from "./Content.vue";
 import Rside from "./Rside.vue";
 
@@ -22,6 +27,7 @@ export default {
     };
   },
   components: {
+    Banner,
     Content,
     Rside
   }
@@ -36,6 +42,6 @@ export default {
 }
 
 .el-aside {
-  width: 350px !important;
+  width: 390px !important;
 }
 </style>
