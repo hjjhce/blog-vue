@@ -3,9 +3,10 @@
     <router-link to="/">Home</router-link>
     <router-link to="/login">login</router-link>
     <router-link to="/blackhole">blackhole</router-link>
+
     <!-- <img src="./assets/logo.png"> -->
     <!-- <Banner/>
-    <Main/> -->
+    <Main/>-->
     <router-view></router-view>
   </div>
 </template>
@@ -26,7 +27,7 @@ export default {
     return {
       message: ""
     };
-  }
+  },
 };
 </script>
 

@@ -1,11 +1,7 @@
 <template>
-    <div>
-        <el-input
-            placeholder="请输入内容"
-            prefix-icon="el-icon-search"
-            v-model="search">
-        </el-input>
-    </div>
+  <div id="home-rside">
+    <el-input placeholder="请输入内容" prefix-icon="el-icon-search" v-model="search"></el-input>
+  </div>
 </template>
 
 
@@ -21,7 +17,7 @@ export default {
 </script>
 
 <style>
-.el-input {
+#home-rside .el-input {
   width: 90%;
   padding: 30px 0px;
 }

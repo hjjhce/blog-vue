@@ -1,20 +1,19 @@
 <template>
-    <div id="admin-login">
-        <el-form ref="form" :model="form" label-width="80px" :label-position="labelPosition">
-            
-                <el-form-item label="Name" >            
-                    <el-input v-model="form.name"></el-input>        
-                </el-form-item>
-            
-                <el-form-item label="Password" >                    
-                    <el-input v-model="form.name"></el-input>                
-                </el-form-item>
-                <div class="error">{{errmsg}}</div>
-            <el-form-item>
-                <el-button type="primary" @click="onSubmit">LOGIN</el-button>                
-            </el-form-item>
-        </el-form>
-    </div>
+  <div id="admin-login">
+    <el-form ref="form" :model="form" label-width="80px" :label-position="labelPosition">
+      <el-form-item label="Name">
+        <el-input v-model="form.name"></el-input>
+      </el-form-item>
+
+      <el-form-item label="Password">
+        <el-input v-model="form.name"></el-input>
+      </el-form-item>
+      <div class="error">{{errmsg}}</div>
+      <el-form-item>
+        <el-button type="primary" @click="onSubmit">LOGIN</el-button>
+      </el-form-item>
+    </el-form>
+  </div>
 </template>
 
 
@@ -32,7 +31,21 @@ export default {
     };
   },
   methods: {
-    onSubmit: function() {}
+    onSubmit: function() {
+      this.$http({
+        method: "POST",
+        url: "login",
+        headers: {
+          'Content-type': 'application/json',
+        },
+        data: {
+          name: "admin",
+          password: "Zz123456"
+        }
+      }).then((res) => {
+        console.log(res.data)
+      });
+    }
   },
   watch: {
     // onSubmit: function() {}
@@ -60,7 +73,7 @@ export default {
 }
 
 #admin-login label {
-  padding: 20px 0px;
+  padding: 20px 10px;
 }
 
 #admin-login button {

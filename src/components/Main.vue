@@ -1,16 +1,16 @@
 <template>
-<div>
+  <div id="home-main">
     <Banner/>
     <el-container>
-        <el-main>
-            <Content/>
-        </el-main>
-        <el-aside>
-            <Rside/>
-        </el-aside>
+      <el-main>
+        <Content/>
+      </el-main>
+      <el-aside>
+        <Rside/>
+      </el-aside>
     </el-container>
     <el-footer></el-footer>
-</div>
+  </div>
 </template>
 
 
@@ -36,12 +36,12 @@ export default {
 
 
 <style>
-.el-main {
+#home-main .el-main {
   padding: 0px;
   margin-right: 10px;
 }
 
-.el-aside {
+#home-main .el-aside {
   width: 390px !important;
 }
 </style>

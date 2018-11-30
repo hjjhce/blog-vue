@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Main from '@/components/Main'
 import Login from '@/components/Login'
 import AdminMain from '@/components/AdminMain'
+import AdminUser from '@/components/AdminUser'
 
 Vue.use(Router)
 
@@ -22,6 +23,16 @@ export default new Router({
     {
       path: "/blackhole",
       name: "AdminMain",
+      component: AdminMain
+    },
+    {
+      path: "/blackhole/user",
+      name: "AdminUser",
+      component: AdminMain
+    },
+    {
+      path: "/blackhole",
+      name: "AdminTest",
       component: AdminMain
     }
   ]

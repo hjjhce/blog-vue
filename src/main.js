@@ -4,8 +4,12 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import './plugins/element.js'
+import axios from 'axios'
 
 Vue.config.productionTip = false
+// axios.defaults.baseURL = "http://localhost:9090/v1/";
+Vue.prototype.$http = axios;
+Vue.prototype.HOST = '/api'
 
 /* eslint-disable no-new */
 new Vue({
