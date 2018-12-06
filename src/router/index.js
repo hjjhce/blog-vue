@@ -30,10 +30,5 @@ export default new Router({
       name: "AdminUser",
       component: AdminMain
     },
-    {
-      path: "/blackhole",
-      name: "AdminTest",
-      component: AdminMain
-    }
   ]
 })

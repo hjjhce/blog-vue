@@ -19,7 +19,7 @@
           <el-input type="password" v-model="form.checkpwd" autocomplete="off" prop="checkpwd"></el-input>
         </el-form-item>
         <el-form-item label="权限" :label-width="formLabelWidth">
-          <el-select v-model="form.privilege" placeholder="请选择用户权限">
+          <el-select v-model="form.role" placeholder="请选择用户权限">
             <el-option label="管理员" value="0"></el-option>
             <el-option label="普通用户" value="1"></el-option>
           </el-select>
@@ -29,76 +29,96 @@
         <el-button @click="dialogFormVisible = false">取 消</el-button>
         <el-button type="primary" @click="onSubmit">确 定</el-button>
       </div>
+      <div class="error">{{errmsg}}</div>
     </el-dialog>
   </div>
 </template>
 
 <script>
 export default {
-    name: "AdminUserAdd" ,
-    data() {
-      return {
-        dialogTableVisible: false,
-        dialogFormVisible: false,
-        form: {
-          name: '',
-          email: '', 
-          password: '',
-          privilege: ''         
+  name: "AdminUserAdd",
+  data() {
+    return {
+      dialogTableVisible: false,
+      dialogFormVisible: false,
+      form: {
+        name: "",
+        email: "",
+        password: "",
+        role: ""
+      },
+      rules: {},
+      errmsg: "",
+      formLabelWidth: "80px"
+    };
+  },
+  methods: {
+    onSubmit: function() {
+      this.$http({
+        method: "POST",
+        url: this.HOST + "/user-add",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
         },
-        rules: {},
-        formLabelWidth: '80px'
-      };
-    },
-    methods: {
-        onSubmit:function() {
-            
-            this.dialogFormVisible = false;
-            this.$http({
-                method: "POST",
-                url: this.HOST + "/user-add",                
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                data: {
-                    name: this.form.username,
-                    email: this.form.email,
-                    mobile: this.form.mobile,
-                    password: this.form.password,
-                    checkpwd: this.form.checkpwd,
-                    privilege: this.form.privilege,
-                }
-            }).then((res) => {
-                console.log(res.data)
-            }).catch((error) => {
-                if(error.response){
-                    console.log(error.response)
-                }else if(error.request){
-                    console.log(error.request)
-                }else{
-                    console.log(error.message)
-                }
-                
-            })
+        data: {
+          name: this.form.username,
+          email: this.form.email,
+          mobile: this.form.mobile,
+          password: this.form.password,
+          checkpwd: this.form.checkpwd,
+          Role: parseInt(this.form.role)
         }
+        // transformRequest: [
+        //   function(data) {
+        //     let ret = "";
+        //     for (let it in data) {
+        //       ret +=
+        //         encodeURIComponent(it) +
+        //         "=" +
+        //         encodeURIComponent(data[it]) +
+        //         "&";
+        //     }
+        //     return ret;
+        //   }
+        // ]
+      })
+        .then(res => {
+          this.dialogFormVisible = false;
+          console.log(res.data);
+        })
+        .catch(error => {
+          if (error.response) {
+            this.errmsg = error.response.data.error.errmsg;
+            console.log(error.response);
+          } else if (error.request) {
+            console.log(error.request);
+          } else {
+            console.log(error.message);
+          }
+        });
     }
-}
+  }
+};
 </script>
 
 
 <style>
 #admin-user-add {
-    text-align: left;
-    margin-bottom: 5px;    
+  text-align: left;
+  margin-bottom: 5px;
 }
 
 #admin-user-add .el-dialog {
-    width: 40%;
+  width: 40%;
 }
 
 #admin-user-add .el-dialog__body form {
-    width: 60%;
-    margin-left: 20%;
+  width: 60%;
+  margin-left: 20%;
+}
+
+#admin-user-add .error {
+  color: firebrick;
 }
 </style>
 
