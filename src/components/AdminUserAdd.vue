@@ -1,6 +1,6 @@
 <template>
   <div id="admin-user-add">
-    <el-button size="small" @click="dialogFormVisible = true">Add User</el-button>
+    <el-button type="primary" size="small" @click="dialogFormVisible = true">新增用户</el-button>
     <el-dialog title="新增用户" :visible.sync="dialogFormVisible">
       <el-form :model="form" :rules="rules">
         <el-form-item label="邮箱" :label-width="formLabelWidth" prop="email">
@@ -56,7 +56,7 @@ export default {
     onSubmit: function() {
       this.$http({
         method: "POST",
-        url: this.HOST + "/user-add",
+        url: this.HOST + "/user/add",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded"
         },

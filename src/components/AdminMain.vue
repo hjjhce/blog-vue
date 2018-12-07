@@ -5,7 +5,10 @@
         <AdminNavMenu/>
       </el-aside>
       <el-container>
-        <el-header class="admin-main-header">{{this.$route.name}}</el-header>
+        <el-header class="admin-main-header">
+          {{this.$route.name}}
+          <el-button type="warning" size="small" @click="logout = true" class="logoutBtn">登出</el-button>
+        </el-header>
         <el-main>
           <AdminUser v-show="this.$route.name == 'AdminUser'"></AdminUser>
           <!-- <router-view></router-view> -->
@@ -27,19 +30,21 @@ export default {
     AdminUser
   },
   data() {
-    return {      
-      message:"",
+    return {
+      message: ""
     };
   },
+  methods: {
+    logout: function() {}
+  }
 };
-
-
 </script>
 
 
 <style>
 #blackhole-main .el-container {
-  background-color: #21eaff;
+  margin: 0px 10px;
+  background-color: paleturquoise;
 }
 
 #blackhole-main .el-aside {
@@ -50,4 +55,9 @@ export default {
   height: 30px !important;
 }
 
+#blackhole-main .logoutBtn {
+  width: 60px;
+  float: right;
+  padding: 10px;
+}
 </style>

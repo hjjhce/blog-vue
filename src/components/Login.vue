@@ -1,12 +1,13 @@
 <template>
   <div id="admin-login">
     <el-form ref="form" :model="form" label-width="80px" :label-position="labelPosition">
-      <el-form-item label="Email">
-        <el-input v-model="form.email"></el-input>
-      </el-form-item>
-      <el-form-item label="Password">
-        <el-input v-model="form.password"></el-input>
-      </el-form-item>
+      <h3>Admin</h3>
+      <!-- <el-form-item label="Email"> -->
+      <el-input v-model="form.email" placeholder="Email"></el-input>
+      <!-- </el-form-item> -->
+      <!-- <el-form-item label="Password"> -->
+      <el-input type="password" v-model="form.password" placeholder="Password"></el-input>
+      <!-- </el-form-item> -->
       <!-- <el-form-item> -->
       <div class="error">{{errmsg}}</div>
       <el-button type="primary" @click="onSubmit">LOGIN</el-button>
@@ -33,8 +34,9 @@ export default {
     onSubmit: function() {
       this.$http({
         method: "POST",
-        url: this.HOST + "/login",
+        url: this.HOST + "/login?sign=" + this.$sign,
         data: {
+          sign: this.$sign,
           email: this.form.email,
           password: this.form.password
         }
@@ -61,11 +63,11 @@ export default {
 
 <style>
 #admin-login {
-  width: 500px;
+  width: 300px;
   margin-left: auto;
   margin-right: auto;
   margin-top: 50px;
-  border: 1px solid #21eaff;
+  /* border: 1px solid #21eaff; */
   padding: 10px;
 }
 
@@ -74,7 +76,7 @@ export default {
 }
 
 #admin-login .el-input {
-  padding: 20px 0px;
+  padding: 10px 0px;
   margin-right: 20px;
 }
 
@@ -83,7 +85,8 @@ export default {
 }
 
 #admin-login button {
-  width: 120px;
+  width: 300px;
+  margin-top: 20px;
 }
 
 #admin-login .error {
