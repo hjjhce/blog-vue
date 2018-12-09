@@ -56,10 +56,10 @@ export default {
     onSubmit: function() {
       this.$http({
         method: "POST",
-        url: this.HOST + "/user/add",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        },
+        url: this.HOST + "/users?sign=" +this.$sign,
+        // headers: {
+        //   "Content-Type": "application/x-www-form-urlencoded"
+        // },
         data: {
           name: this.form.username,
           email: this.form.email,

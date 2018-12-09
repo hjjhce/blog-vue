@@ -34,7 +34,7 @@ export default {
     onSubmit: function() {
       this.$http({
         method: "POST",
-        url: this.HOST + "/login?sign=" + this.$sign,
+        url: this.HOST + "/users/login?sign=" + this.$sign,
         data: {
           sign: this.$sign,
           email: this.form.email,
