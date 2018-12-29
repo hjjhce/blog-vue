@@ -7,7 +7,7 @@
       <el-container>
         <el-header class="admin-main-header">
           {{this.$route.name}}
-          <el-button type="warning" size="small" @click="logout = true" class="logoutBtn">登出</el-button>
+          <el-button type="warning" @click="logoutClick" class="logoutBtn">登出</el-button>
         </el-header>
         <el-main>
           <AdminUser v-show="this.$route.name == 'AdminUser'"></AdminUser>
@@ -35,7 +35,32 @@ export default {
     };
   },
   methods: {
-    logout: function() {}
+    logoutClick: function() {
+      this.$confirm("确认退出登录?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {
+        this.logoutHandle();
+      });
+    },
+
+    logoutHandle: function() {
+      this.$http({
+        method: "delete",
+        url: this.HOST + "/users?sign=" + this.$sign,
+        data: {}
+      })
+        .then(res => {
+          this.router.push({ name: "Login" });
+        })
+        .catch(err => {
+          this.$message({
+            type: "error",
+            message: "系统错误"
+          });
+        });
+    }
   }
 };
 </script>

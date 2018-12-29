@@ -56,10 +56,7 @@ export default {
     onSubmit: function() {
       this.$http({
         method: "POST",
-        url: this.HOST + "/users?sign=" +this.$sign,
-        // headers: {
-        //   "Content-Type": "application/x-www-form-urlencoded"
-        // },
+        url: this.HOST + "/users?sign=" + this.$sign,
         data: {
           name: this.form.username,
           email: this.form.email,
@@ -68,32 +65,24 @@ export default {
           checkpwd: this.form.checkpwd,
           Role: parseInt(this.form.role)
         }
-        // transformRequest: [
-        //   function(data) {
-        //     let ret = "";
-        //     for (let it in data) {
-        //       ret +=
-        //         encodeURIComponent(it) +
-        //         "=" +
-        //         encodeURIComponent(data[it]) +
-        //         "&";
-        //     }
-        //     return ret;
-        //   }
-        // ]
       })
         .then(res => {
           this.dialogFormVisible = false;
+          this.$emit("refresh-users");
           console.log(res.data);
         })
         .catch(error => {
           if (error.response) {
-            this.errmsg = error.response.data.error.errmsg;
             console.log(error.response);
+            if (error.response.headers.location) {
+              this.router.push({ path: error.response.headers.location });
+              // return;
+            }
+            // this.errmsg = error.response.data.error.errmsg;
           } else if (error.request) {
-            console.log(error.request);
+            // console.log(error.request);
           } else {
-            console.log(error.message);
+            // console.log(error.message);
           }
         });
     }

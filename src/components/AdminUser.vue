@@ -1,6 +1,6 @@
 <template>
   <div id="admin-user">
-    <AdminUserAdd></AdminUserAdd>
+    <AdminUserAdd v-on:refresh-users="getUsers"></AdminUserAdd>
     <div class="error">{{ errmsg }}</div>
     <!-- <div>{{tableData}}</div> -->
     <el-table
@@ -15,8 +15,12 @@
           <el-input v-model="search" size="mini" placeholder="输入关键字搜索"/>
         </template>
         <template slot-scope="scope">
-          <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">Edit</el-button>
-          <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">Delete</el-button>
+          <el-button size="mini" @click="handleEdit(scope.row.ID)">Edit</el-button>
+          <el-button
+            size="mini"
+            type="danger"
+            @click="handleDelete(scope.row.ID, scope.$index)"
+          >Delete</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -54,36 +58,87 @@ export default {
       }
       return roleName;
     },
+    getUsers() {
+      let vm = this;
+      this.$http({
+        method: "GET",
+        url: vm.HOST + "/users?sign=" + vm.$sign
+      })
+        .then(res => {
+          vm.tableData = res.data.data;
+        })
+        .catch(error => {
+          if (error.response) {
+            this.errmsg = error.response.data.error.errmsg;
+          } else if (error.request) {
+            console.log(error.request);
+          } else {
+            vm.errmsg = error.message;
+          }
+        });
+    },
 
     handleEdit(index, row) {
       console.log(index, row);
     },
-    handleDelete(index, row) {
-      console.log(index, row);
+    handleDelete(id, index) {
+      this.$confirm("是否确认删除该信息", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.$http({
+            method: "DELETE",
+            url: this.HOST + "/users/" + id + "?sign=" + this.$sign
+          })
+            .then(res => {
+              //不需要再请求接口，直接在tableData里删除该数据
+              this.tableData.splice(index, 1);
+            })
+            .catch(error => {
+              if (error.response) {
+                if (error.response.headers.location) {
+                  this.router.push({ path: error.response.headers.location });
+                }
+                this.errmsg = error.response.data.error.errmsg;
+              } else if (error.request) {
+                console.log(error.request);
+              } else {
+              }
+            });
+        })
+        .catch(() => {
+          console.log("another");
+        });
     }
   },
-  computed: {
-    // tableData: function()
-  },
+  computed: {},
   created() {
+    let vm = this;
     this.$http({
       method: "GET",
-      url: this.HOST + "/users?sign=" + this.$sign
+      url: vm.HOST + "/users?sign=" + vm.$sign
     })
       .then(res => {
         console.log(res.data.data);
-        this.tableData = res.data.data;
+        vm.tableData = res.data.data;
       })
       .catch(error => {
         if (error.response) {
+          console.log(error.response);
+          if (error.response.headers.location) {
+            this.router.push({ path: error.response.headers.location });
+          }
           this.errmsg = error.response.data.error.errmsg;
         } else if (error.request) {
           console.log(error.request);
         } else {
-          this.errmsg = error.message;
+          vm.errmsg = error.message;
         }
       });
-  }
+  },
+  watch: {}
 };
 </script>
 
