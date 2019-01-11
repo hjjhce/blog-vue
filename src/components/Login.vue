@@ -18,6 +18,8 @@
 
 
 <script>
+import request from "@/common/request";
+
 export default {
   name: "Login",
   data() {
@@ -32,7 +34,23 @@ export default {
   },
   methods: {
     onSubmit: function() {
-      this.$http({
+      request
+        .post("/users/login", {
+          email: this.form.email,
+          password: this.form.password
+        })
+        .then(
+          function(res) {},
+          function(err) {
+            console.log(err.data);
+            this.errmsg = err.data.error.errmsg;
+          }
+        )
+        .catch(err => {
+          console.log(err);
+        });
+
+      /*this.$http({
         method: "POST",
         url: this.HOST + "/users/login?sign=" + this.$sign,
         data: {
@@ -53,7 +71,7 @@ export default {
           } else {
             console.log(error.message);
           }
-        });
+        });*/
     }
   },
   watch: {}
