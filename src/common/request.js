@@ -3,7 +3,8 @@ import axios from "axios"
 var request = {
 
     baseURL: "http://192.168.120.139:9090/v1",
-    code: "pingtouge",
+    token: "pingtouge",
+
 
     get: function (url, params) {
         let config = {
@@ -26,17 +27,23 @@ var request = {
         }
 
         let formData;
+        let contentType;
         if (uploadFile) {
+            contentType = "multipart/form-data";
             formData = new FormData()
             for (let key in params) {
                 formData.append(key, params[key]);
             }
         } else {
+            contentType = "application/x-www-form-urlencoded";
             formData = JSON.stringify(params);
         }
 
         let config = {
             baseURL: request.baseURL,
+            headers: {
+                'Content-Type': contentType,
+            }
         }
         return axios.post(url, formData, config);
     },
@@ -45,8 +52,12 @@ var request = {
         return axios.put();
     },
 
-    delete: function () {
-        return axios.delete();
+    delete: function (url, params) {
+        let config = {
+            params: params,
+            baseURL: request.baseURL,
+        }
+        return axios.delete(url, config);
     }
 }
 
@@ -54,7 +65,7 @@ axios.interceptors.request.use(function (config) {
 
     let headers = {
         ...config.headers,
-        'code': request.code,
+        'token': request.token,
     }
 
     let updateConfig = {
@@ -69,7 +80,6 @@ axios.interceptors.request.use(function (config) {
 });
 
 axios.interceptors.response.use(function (response) {
-    console.log('response', response);
     return response;
 }, function (error) {
     if (error.response == undefined) {

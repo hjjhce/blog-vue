@@ -34,13 +34,16 @@ export default {
   },
   methods: {
     onSubmit: function() {
+      let _this = this;
       request
         .post("/users/login", {
           email: this.form.email,
           password: this.form.password
         })
         .then(
-          function(res) {},
+          function(res) {
+            _this.router.push({ name: "AdminMain" });
+          },
           function(err) {
             console.log(err.data);
             this.errmsg = err.data.error.errmsg;

@@ -1,6 +1,6 @@
 <template>
   <div id="admin-user">
-    <AdminUserAdd v-on:refresh-users="getUsers"></AdminUserAdd>
+    <UserAdd v-on:refresh-users="getUsers"></UserAdd>
     <div class="error">{{ errmsg }}</div>
     <!-- <div>{{tableData}}</div> -->
     <el-table
@@ -28,12 +28,13 @@
 </template>
 
 <script>
-import AdminUserAdd from "./AdminUserAdd";
+import request from "@/common/request";
+import UserAdd from "./UserAdd";
 
 export default {
-  name: "AdminUser",
+  name: "User",
   components: {
-    AdminUserAdd
+    UserAdd
   },
   data() {
     return {
@@ -59,22 +60,20 @@ export default {
       return roleName;
     },
     getUsers() {
-      let vm = this;
-      this.$http({
-        method: "GET",
-        url: vm.HOST + "/users?sign=" + vm.$sign
-      })
-        .then(res => {
-          vm.tableData = res.data.data;
-        })
-        .catch(error => {
-          if (error.response) {
-            this.errmsg = error.response.data.error.errmsg;
-          } else if (error.request) {
-            console.log(error.request);
-          } else {
-            vm.errmsg = error.message;
+      let _this = this;
+      request
+        .get("/users")
+        .then(
+          function(res) {
+            console.log(res.data);
+            _this.tableData = res.data.data;
+          },
+          function(err) {
+            _this.errmsg = err.response.data.msg;
           }
+        )
+        .catch(err => {
+          console.log(err);
         });
     },
 
@@ -86,57 +85,60 @@ export default {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
-      })
-        .then(() => {
-          this.$http({
-            method: "DELETE",
-            url: this.HOST + "/users/" + id + "?sign=" + this.$sign
-          })
-            .then(res => {
-              //不需要再请求接口，直接在tableData里删除该数据
-              this.tableData.splice(index, 1);
-            })
-            .catch(error => {
-              if (error.response) {
-                if (error.response.headers.location) {
-                  this.router.push({ path: error.response.headers.location });
-                }
-                this.errmsg = error.response.data.error.errmsg;
-              } else if (error.request) {
-                console.log(error.request);
-              } else {
-              }
-            });
-        })
-        .catch(() => {
-          console.log("another");
-        });
+      }).then(() => {
+        let _this = this;
+        request
+          .delete("/users/" + id, { id: id })
+          .then(
+            function(res) {
+              _this.tableData.splice(index, 1);
+            },
+            function(err) {
+              _this.errmsg = err.data.msg;
+            }
+          )
+          .catch(console.log(err));
+      });
     }
   },
   computed: {},
   created() {
-    let vm = this;
-    this.$http({
-      method: "GET",
-      url: vm.HOST + "/users?sign=" + vm.$sign
-    })
-      .then(res => {
-        console.log(res.data.data);
-        vm.tableData = res.data.data;
-      })
-      .catch(error => {
-        if (error.response) {
-          console.log(error.response);
-          if (error.response.headers.location) {
-            this.router.push({ path: error.response.headers.location });
-          }
-          this.errmsg = error.response.data.error.errmsg;
-        } else if (error.request) {
-          console.log(error.request);
-        } else {
-          vm.errmsg = error.message;
+    let _this = this;
+    request
+      .get("/users")
+      .then(
+        function(res) {
+          _this.tableData = res.data.data;
+        },
+        function(err) {
+          _this.errmsg = err.data.msg;
         }
+      )
+      .catch(err => {
+        console.log(err);
       });
+    // let vm = this;
+    // this.$http({
+    //   method: "GET",
+    //   url: vm.HOST + "/users?sign=" + vm.$sign
+    // })
+    //   .then(res => {
+    //     console.log(res.data.data);
+    //     vm.tableData = res.data.data;
+    //   })
+    //   .catch(error => {
+    //     if (error.response) {
+    //       console.log(error.response);
+    //       if (error.response.headers.location) {
+    //         this.router.push({ path: error.response.headers.location });
+    //       }
+    //       this.errmsg = error.response.data.error.errmsg;
+    //     } else if (error.request) {
+    //       console.log(error.request);
+    //     } else {
+    //       vm.errmsg = error.message;
+    //     }
+    //   });
   },
   watch: {}
 };

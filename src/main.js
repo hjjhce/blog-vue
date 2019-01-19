@@ -12,7 +12,7 @@ Vue.config.productionTip = false
 Vue.prototype.$http = axios;
 Vue.prototype.HOST = '/api';
 Vue.prototype.router = router;
-Vue.prototype.$sign = 'whyspacex';
+// Vue.prototype.$sign = 'whyspacex';
 
 
 /* eslint-disable no-new */

@@ -50,7 +50,7 @@
 
 <script>
 export default {
-  name: "AdminNavMenu",
+  name: "NavMenu",
   data() {
     return {
       isCollapse: true,

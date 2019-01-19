@@ -2,15 +2,15 @@
   <div id="blackhole-main">
     <el-container>
       <el-aside>
-        <AdminNavMenu/>
+        <NavMenu/>
       </el-aside>
       <el-container>
-        <el-header class="admin-main-header">
+        <el-header class="main-header">
           {{this.$route.name}}
           <el-button type="warning" @click="logoutClick" class="logoutBtn">登出</el-button>
         </el-header>
         <el-main>
-          <AdminUser v-show="this.$route.name == 'AdminUser'"></AdminUser>
+          <User v-show="this.$route.name == 'AdminUser'"></User>
           <!-- <router-view></router-view> -->
         </el-main>
       </el-container>
@@ -20,18 +20,19 @@
 
 
 <script>
-import AdminNavMenu from "./AdminNavMenu.vue";
-import AdminUser from "./AdminUser.vue";
+import NavMenu from "./NavMenu.vue";
+import User from "./user/User.vue";
+import request from "@/common/request.js";
 
 export default {
   name: "AdminMain",
   components: {
-    AdminNavMenu,
-    AdminUser
+    NavMenu,
+    User
   },
   data() {
     return {
-      message: ""
+      errmsg: ""
     };
   },
   methods: {
@@ -46,20 +47,16 @@ export default {
     },
 
     logoutHandle: function() {
-      this.$http({
-        method: "delete",
-        url: this.HOST + "/users?sign=" + this.$sign,
-        data: {}
-      })
-        .then(res => {
-          this.router.push({ name: "Login" });
-        })
-        .catch(err => {
-          this.$message({
-            type: "error",
-            message: "系统错误"
-          });
-        });
+      let _this = this;
+      request.get("/users/logout", {}).then(
+        function(res) {
+          _this.router.push({ name: "Login" });
+        },
+        function(err) {
+          console.log(err);
+          this.errmsg = err.data.msg;
+        }
+      );
     }
   }
 };
@@ -76,7 +73,7 @@ export default {
   width: auto !important;
 }
 
-#blackhole-main header.admin-main-header {
+#blackhole-main header.main-header {
   height: 30px !important;
 }
 

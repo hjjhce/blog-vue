@@ -35,8 +35,10 @@
 </template>
 
 <script>
+import request from "@/common/request";
+
 export default {
-  name: "AdminUserAdd",
+  name: "UserAdd",
   data() {
     return {
       dialogTableVisible: false,
@@ -54,37 +56,59 @@ export default {
   },
   methods: {
     onSubmit: function() {
-      this.$http({
-        method: "POST",
-        url: this.HOST + "/users?sign=" + this.$sign,
-        data: {
+      let _this = this;
+      request
+        .post("/users", {
           name: this.form.username,
           email: this.form.email,
           mobile: this.form.mobile,
           password: this.form.password,
           checkpwd: this.form.checkpwd,
           Role: parseInt(this.form.role)
-        }
-      })
-        .then(res => {
-          this.dialogFormVisible = false;
-          this.$emit("refresh-users");
-          console.log(res.data);
         })
-        .catch(error => {
-          if (error.response) {
-            console.log(error.response);
-            if (error.response.headers.location) {
-              this.router.push({ path: error.response.headers.location });
-              // return;
-            }
-            // this.errmsg = error.response.data.error.errmsg;
-          } else if (error.request) {
-            // console.log(error.request);
-          } else {
-            // console.log(error.message);
+        .then(
+          function(res) {
+            _this.dialogFormVisible = false;
+            _this.$emit("refresh-users");
+          },
+          function(err) {
+            _this.errmsg = err.data.msg;
           }
+        )
+        .catch(err => {
+          console.log(err);
         });
+      // this.$http({
+      //   method: "POST",
+      //   url: this.HOST + "/users?sign=" + this.$sign,
+      //   data: {
+      //     name: this.form.username,
+      //     email: this.form.email,
+      //     mobile: this.form.mobile,
+      //     password: this.form.password,
+      //     checkpwd: this.form.checkpwd,
+      //     Role: parseInt(this.form.role)
+      //   }
+      // })
+      //   .then(res => {
+      //     this.dialogFormVisible = false;
+      //     this.$emit("refresh-users");
+      //     console.log(res.data);
+      //   })
+      //   .catch(error => {
+      //     if (error.response) {
+      //       console.log(error.response);
+      //       if (error.response.headers.location) {
+      //         this.router.push({ path: error.response.headers.location });
+      //         // return;
+      //       }
+      //       // this.errmsg = error.response.data.error.errmsg;
+      //     } else if (error.request) {
+      //       // console.log(error.request);
+      //     } else {
+      //       // console.log(error.message);
+      //     }
+      //   });
     }
   }
 };
