@@ -10,6 +10,7 @@
           <el-button type="warning" @click="logoutClick" class="logoutBtn">登出</el-button>
         </el-header>
         <el-main>
+          <PostList v-show="this.$route.name == 'PostList'"></PostList>
           <User v-show="this.$route.name == 'AdminUser'"></User>
           <!-- <router-view></router-view> -->
         </el-main>
@@ -21,6 +22,7 @@
 
 <script>
 import NavMenu from "./NavMenu.vue";
+import PostList from "./post/list.vue";
 import User from "./user/User.vue";
 import request from "@/common/request.js";
 
@@ -32,7 +34,8 @@ export default {
   },
   data() {
     return {
-      errmsg: ""
+      errmsg: "",
+      item: []
     };
   },
   methods: {
@@ -67,6 +70,7 @@ export default {
 #blackhole-main .el-container {
   margin: 0px 10px;
   background-color: paleturquoise;
+  height: 600px;
 }
 
 #blackhole-main .el-aside {
@@ -81,5 +85,21 @@ export default {
   width: 60px;
   float: right;
   padding: 10px;
+}
+
+.el-carousel__item h3 {
+  color: #475669;
+  font-size: 14px;
+  opacity: 0.75;
+  line-height: 200px;
+  margin: 0;
+}
+
+.el-carousel__item:nth-child(2n) {
+  background-color: #99a9bf;
+}
+
+.el-carousel__item:nth-child(2n + 1) {
+  background-color: #d3dce6;
 }
 </style>

@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import Main from '@/components/home/Main'
 import Login from '@/components/home/Login'
 import AdminMain from '@/components/admin/Main'
-import AdminUser from '@/components/admin/user/User'
+import PostList from '@/components/admin/post/list'
 
 Vue.use(Router)
 
@@ -29,6 +29,11 @@ export default new Router({
       path: "/blackhole/user",
       name: "AdminUser",
       component: AdminMain
+    },
+    {
+      path: "/blackhole/post",
+      name: "PostList",
+      component: PostList
     },
   ]
 })

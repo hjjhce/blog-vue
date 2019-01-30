@@ -7,6 +7,7 @@ var request = {
 
 
     get: function (url, params) {
+        url += "/"
         let config = {
             params: params,
             baseURL: request.baseURL,

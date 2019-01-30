@@ -117,28 +117,6 @@ export default {
       .catch(err => {
         console.log(err);
       });
-    // let vm = this;
-    // this.$http({
-    //   method: "GET",
-    //   url: vm.HOST + "/users?sign=" + vm.$sign
-    // })
-    //   .then(res => {
-    //     console.log(res.data.data);
-    //     vm.tableData = res.data.data;
-    //   })
-    //   .catch(error => {
-    //     if (error.response) {
-    //       console.log(error.response);
-    //       if (error.response.headers.location) {
-    //         this.router.push({ path: error.response.headers.location });
-    //       }
-    //       this.errmsg = error.response.data.error.errmsg;
-    //     } else if (error.request) {
-    //       console.log(error.request);
-    //     } else {
-    //       vm.errmsg = error.message;
-    //     }
-    //   });
   },
   watch: {}
 };
